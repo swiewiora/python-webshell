@@ -27,10 +27,10 @@ def command(cmd):
     print(c)
     try:
         result = subprocess.check_output(c, shell=True).decode()
+        emit('message', {'msg': result})
     except Exception as err:
         result = str(err)
-
-    emit('message', {'msg': result})
+        emit('error', {'msg': result})
 
 
 if __name__ == '__main__':
