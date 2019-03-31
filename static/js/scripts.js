@@ -1,27 +1,29 @@
 const socket = io.connect('http://' + document.domain + ':' + location.port + '/shell')
+const input = document.getElementById('input')
+const shell = document.getElementById('shell')
 
 socket.on('connect', function() {
     socket.emit('joined', {})
 });
 
 socket.on('message', function(data) {
-    $('#shell').val($('#shell').val() + data.msg + '\n');
-    $('#shell').scrollTop($('#shell')[0].scrollHeight)
+    shell.value = shell.value + data.msg + '\n'
+    shell.scrollTop = shell.scrollHeight
 });
 
 socket.on('status', function(data) {
-    $('#shell').val($('#shell').val() + '<' + data.msg + '>\n');
-    $('#shell').scrollTop($('#shell')[0].scrollHeight)
+    shell.value = shell.value + '<' + data.msg + '>\n'
+    shell.scrollTop = shell.scrollHeight
 });
 
-$('#text').keypress(function(e) {
-    let code = e.keyCode || e.which
+input.addEventListener('keypress', (event) => {
+    let code = event.keyCode || event.which
     if (code == 13) {
-        text = $('#text').val()
-        $('#text').val('')
+        text = input.value
         socket.emit('command', {msg: text})
+        input.value = ''
     }
-});
+})
 
 function leave_room() {
     socket.disconnect()

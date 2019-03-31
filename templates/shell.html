@@ -5,20 +5,20 @@
     <title>Web Shell</title>
 </head>
 <body>
-    <h1>WEBSHELL</h1>
+    <h1>WEB SHELL</h1>
 
-    <textarea id="shell" cols="80" rows="20"></textarea>
+    <textarea id="shell" cols="80" rows="20" readonly></textarea>
 
     <br><br>
 
-    <input id="text" size="80" placeholder="Input command">
+    <input id="input" size="80" placeholder="Input command">
 
     <br><br>
 
     <a href="#" onclick="leave_room();">Disconnect</a>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>
+<!--<script src="https://code.jquery.com/jquery-3.3.1.slim.js"></script>-->
 <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     </body>
 </html>
