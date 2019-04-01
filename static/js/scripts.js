@@ -7,7 +7,7 @@ socket.on('connect', () => {
 })
 
 socket.on('message', (data) => {
-    shell.innerHTML += data.msg + '\n'
+    shell.innerText += data.msg + '\n'
     shell.scrollTop = shell.scrollHeight
 })
 
@@ -29,8 +29,8 @@ input.addEventListener('keypress', (event) => {
             shell.innerText = ''
         } else {
             socket.emit('command', {msg: text})
-            input.value = ''
         }
+        input.value = ''
     }
 })
 

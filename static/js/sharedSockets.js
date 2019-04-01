@@ -1,8 +1,8 @@
-importScripts('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js');
-let socket = null
-
-debugger
-self.onmessage = (event) => {
+//importScripts('https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js');
+//let socket = null
+//
+//debugger
+self.onconnect = (event) => {
 debugger
 //     let port = event.ports[0]
 

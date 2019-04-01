@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 
-import os
-from subprocess import check_output
+from subprocess import check_output, PIPE, Popen
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+from flask_login import current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 app.config['DEBUG'] = True
 socketio = SocketIO(app)
-
 
 @app.route('/')
 def index():
@@ -18,26 +17,32 @@ def index():
 
 @socketio.on('joined', namespace='/shell')
 def joined(msg):
+    # Run "cat", which is a simple Linux program that prints it's input.
+    global process
+    process = Popen(shell=True, stdin=PIPE, stdout=PIPE)
     emit('status', {'msg': 'Connected to server'})
 
 
 @socketio.on('command', namespace='/shell')
 def command(cmd):
-    c = cmd['msg']
-    emit('message', {'msg': '$ ' + c})
-    print(c)
+    command = cmd['msg']
+    emit('message', {'msg': '$ ' + command})
+    print(command)
     try:
-        result = check_output(c, shell=True).decode()
-        emit('message', {'msg': result})
+        process.stdin.write(b'cd ..\n')
+        process.stdin.flush()
+        output = process.stdout.read()
+        exitstatus = process.poll()
+        if exitstatus == 0:
+            emit('message', {'msg': output})
+        else:
+            emit('error', {'msg': output})
+
     except Exception as err:
         result = str(err)
         emit('error', {'msg': result})
 
 
-# @app.route('/js/<path:filename>')
-# def send_js(filename):
-#     root_dir = os.path.dirname(os.getcwd())
-#     return send_from_directory(os.path.join('.', 'static', 'js'), filename)
 
 
 if __name__ == '__main__':

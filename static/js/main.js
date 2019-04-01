@@ -5,11 +5,11 @@ if (!window.SharedWorker) {
     console.log("SharedWorker not supported")
 }
 
-const worker = new Worker('/static/js/sharedSockets.js')
+var worker = new SharedWorker('/static/js/sharedSockets.js')
 //worker.port.start()
-worker.postMessage("start")
+//worker.port.postMessage("start")
 
-worker.onmessage = (event) => {
+worker.port.onmessage = (event) => {
     let data = JSON.parse(event.data)
     switch (data.type) {
         case 'message':
@@ -39,7 +39,7 @@ input.addEventListener('keypress', (event) => {
             shell.innerText = ''
         } else {
             let data = JSON.stringify({ type: 'command', msg: text})
-            worker.postMessage(data)
+            worker.port.postMessage(data)
             input.value = ''
         }
     }
