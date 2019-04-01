@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 
-import subprocess
+import os
+from subprocess import check_output
 from flask import Flask, render_template
-from flask_socketio import SocketIO, send, emit
+from flask_socketio import SocketIO, emit
 
-app = Flask('webshell')
-app.config['SECRET_KEY'] = 'top secret'
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret'
 app.config['DEBUG'] = True
 socketio = SocketIO(app)
 
@@ -16,7 +17,7 @@ def index():
 
 
 @socketio.on('joined', namespace='/shell')
-def joined(message):
+def joined(msg):
     emit('status', {'msg': 'Connected to server'})
 
 
@@ -26,12 +27,18 @@ def command(cmd):
     emit('message', {'msg': '$ ' + c})
     print(c)
     try:
-        result = subprocess.check_output(c, shell=True).decode()
+        result = check_output(c, shell=True).decode()
         emit('message', {'msg': result})
     except Exception as err:
         result = str(err)
         emit('error', {'msg': result})
 
 
+# @app.route('/js/<path:filename>')
+# def send_js(filename):
+#     root_dir = os.path.dirname(os.getcwd())
+#     return send_from_directory(os.path.join('.', 'static', 'js'), filename)
+
+
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, debug=True)
