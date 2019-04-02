@@ -3,13 +3,13 @@
 from subprocess import check_output, PIPE, Popen
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
+
 # from flask_login import current_user
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 app.config['DEBUG'] = True
 socketio = SocketIO(app)
-
 
 
 @app.route('/')
@@ -19,9 +19,20 @@ def index():
 
 @socketio.on('joined', namespace='/shell')
 def joined(msg):
-    # Run "cat", which is a simple Linux program that prints it's input.
     global process
-    process = Popen('cmd', shell=True, stdin=PIPE, stdout=PIPE)
+    process = Popen('cmd',  # await?
+                    shell=True,  # security hazard
+                    stdin=PIPE,
+                    stdout=PIPE,
+                    stderr=PIPE
+                    )
+    while True:
+        try:
+            print(process.stdout.readline())
+        except Exception as err:
+            print("execption: " + str(err) )
+            break
+
     emit('status', {'msg': 'Connected to server'})
 
 
@@ -29,23 +40,32 @@ def joined(msg):
 def command(cmd):
     message = cmd['msg']
     emit('message', {'msg': '$ ' + message})
-    message = (message + '\r\n').encode()
     print(message)
-    try:
-        # process.stdin.write(message.encode() + b'\n')
-        # process.stdin.flush()
-        (stdout, stderr) = process.communicate(input=message, timeout=30)
-        print(stdout)
-        print(stderr)
-        exitstatus = process.poll()
-        if exitstatus == 0:
-            emit('message', {'msg': stdout.decode()})
-        else:
-            emit('error', {'msg': stderr.decode()})
-    except Exception as err:
-        result = str(err)
-        print(result)
-        emit('error', {'msg': result})
+    message = (message + '\r\n').encode()
+    # try:
+
+    process.stdin.write(message)
+    process.stdin.flush()
+    # process.wait()
+
+    stdout = process.stdout.readline()
+
+    # stderr = process.stderr.readlines()
+    print(stdout, stderr)
+
+    process.stdout.flush()
+    process.stderr.flush()
+
+    # (stdout, stderr) = process.communicate()
+    # exitstatus = process.poll()
+    if stdout:
+        emit('message', {'msg': stdout})
+    if stderr:
+        emit('error', {'msg': stderr})
+    # except Exception as err:
+    #     result = str(err)
+    #     print(result)
+    #     emit('error', {'msg': result})
 
 
 if __name__ == '__main__':
