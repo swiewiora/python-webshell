@@ -26,12 +26,7 @@ def joined(msg):
                     stdout=PIPE,
                     stderr=PIPE
                     )
-    while True:
-        try:
-            print(process.stdout.readline())
-        except Exception as err:
-            print("execption: " + str(err) )
-            break
+    # process.wait()
 
     emit('status', {'msg': 'Connected to server'})
 
@@ -42,15 +37,12 @@ def command(cmd):
     emit('message', {'msg': '$ ' + message})
     print(message)
     message = (message + '\r\n').encode()
-    # try:
 
     process.stdin.write(message)
     process.stdin.flush()
-    # process.wait()
-
-    stdout = process.stdout.readline()
-
-    # stderr = process.stderr.readlines()
+    # process.wait() # deadlock
+    # stdout = process.stdout.read()  # deadlock
+    # stderr = process.stderr.readlines() # deadlock
     print(stdout, stderr)
 
     process.stdout.flush()
