@@ -8,17 +8,20 @@
 </head>
 <body>
     <h1>WEB SHELL</h1>
+    <div>
+        <code id="shell"></code>
+    </div>
+    <div>
+        <input id="input" type="text" size="40" placeholder="Input command">
+    </div>
+    <div>
+        <p>Usage:<br />
+            -d - Disconnect from server<br />
+            -c - Connect to server<br />
+            clear - clear console</p>
+    </div>
 
-    <pre class="prettyprint"><code id="shell"></code></pre>
-
-    <br><br>
-
-    <input id="input" size="80" placeholder="Input command">
-
-    <br><br>
-
-    <a href="#" onclick="leave_room();">Disconnect</a>
-
+    <pre id="converter" hidden></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
 </body>

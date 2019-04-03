@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 
-from subprocess import check_output, PIPE, Popen
+from subprocess import check_output
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
-
-# from flask_login import current_user
+import traceback
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -17,47 +16,28 @@ def index():
     return render_template('shell.html')
 
 
-@socketio.on('joined', namespace='/shell')
-def joined(msg):
-    global process
-    process = Popen('cmd',  # await?
-                    shell=True,  # security hazard
-                    stdin=PIPE,
-                    stdout=PIPE,
-                    stderr=PIPE
-                    )
-    # process.wait()
-
+@socketio.on('connect', namespace='/shell')
+def connected():
     emit('status', {'msg': 'Connected to server'})
+
+
+@socketio.on('disconnect', namespace='/shell')
+def disconnected():
+    print('Client disconnected')
 
 
 @socketio.on('command', namespace='/shell')
 def command(cmd):
-    message = cmd['msg']
-    emit('message', {'msg': '$ ' + message})
-    print(message)
-    message = (message + '\r\n').encode()
-
-    process.stdin.write(message)
-    process.stdin.flush()
-    # process.wait() # deadlock
-    # stdout = process.stdout.read()  # deadlock
-    # stderr = process.stderr.readlines() # deadlock
-    print(stdout, stderr)
-
-    process.stdout.flush()
-    process.stderr.flush()
-
-    # (stdout, stderr) = process.communicate()
-    # exitstatus = process.poll()
-    if stdout:
-        emit('message', {'msg': stdout})
-    if stderr:
-        emit('error', {'msg': stderr})
-    # except Exception as err:
-    #     result = str(err)
-    #     print(result)
-    #     emit('error', {'msg': result})
+    command = cmd['msg']
+    emit('message', {'msg': '$ ' + command})
+    print(command)
+    try:
+        result = check_output(command, shell=True, universal_newlines=True) #.decode()
+        emit('message', {'msg': result})
+    except Exception as err:
+        traceback.print_exc()
+        result = str(err)
+        emit('error', {'msg': result})
 
 
 if __name__ == '__main__':

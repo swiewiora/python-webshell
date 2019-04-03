@@ -1,12 +1,12 @@
 /* Code Styles */
-pre code {
+code {
     min-height: 100px;
     max-height: 400px;
     height: auto;
     overflow-y: auto;
     display: block;
     line-height: 1.6em;
-    font-size: 11px;
+    font-size: 14px;
     white-space: pre; 
     word-wrap: normal;
     border-style: solid;
