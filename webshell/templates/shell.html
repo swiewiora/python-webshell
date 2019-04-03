@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Web Shell</title>
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
     <h1>WEB SHELL</h1>
@@ -12,7 +12,7 @@
         <code id="shell"></code>
     </div>
     <div>
-        <input id="input" type="text" size="40" placeholder="Input command">
+        <input id="input" type="text" placeholder="Input command">
     </div>
     <div>
         <p>Usage:<br />
@@ -23,6 +23,6 @@
 
     <pre id="converter" hidden></pre>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>

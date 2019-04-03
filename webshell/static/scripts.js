@@ -52,8 +52,3 @@ input.addEventListener('keypress', (event) => {
         input.value = ''
     }
 })
-
-function leave_room() {
-    socket.disconnect()
-    window.location.href = "http://www.google.com"
-}

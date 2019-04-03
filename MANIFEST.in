@@ -1,0 +1,3 @@
+graft webshell/templates
+graft webshell/static
+global-exclude *.pyc

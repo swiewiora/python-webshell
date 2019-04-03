@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from subprocess import check_output
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
@@ -8,7 +6,7 @@ import traceback
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 app.config['DEBUG'] = True
-socketio = SocketIO(app)
+socket = SocketIO(app)
 
 
 @app.route('/')
@@ -16,23 +14,23 @@ def index():
     return render_template('shell.html')
 
 
-@socketio.on('connect', namespace='/shell')
+@socket.on('connect', namespace='/shell')
 def connected():
     emit('status', {'msg': 'Connected to server'})
 
 
-@socketio.on('disconnect', namespace='/shell')
+@socket.on('disconnect', namespace='/shell')
 def disconnected():
     print('Client disconnected')
 
 
-@socketio.on('command', namespace='/shell')
-def command(cmd):
-    command = cmd['msg']
-    emit('message', {'msg': '$ ' + command})
-    print(command)
+@socket.on('command', namespace='/shell')
+def command(data):
+    cmd = data['msg']
+    emit('message', {'msg': '$ ' + cmd})
+    print(cmd)
     try:
-        result = check_output(command, shell=True, universal_newlines=True) #.decode()
+        result = check_output(cmd, shell=True, universal_newlines=True)
         emit('message', {'msg': result})
     except Exception as err:
         traceback.print_exc()
@@ -41,4 +39,4 @@ def command(cmd):
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socket.run(app, debug=True)
