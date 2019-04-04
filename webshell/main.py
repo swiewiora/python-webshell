@@ -2,6 +2,7 @@ from subprocess import check_output
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import traceback
+from sarge import Command, Capture
 from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
@@ -23,6 +24,7 @@ def connected():
 @socket.on('disconnect', namespace='/shell')
 def disconnected():
     print('Client disconnected')
+
 
 
 @socket.on('command', namespace='/shell')

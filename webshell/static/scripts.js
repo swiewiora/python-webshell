@@ -1,6 +1,9 @@
 const input = document.getElementById('input')
 const shell = document.getElementById('shell')
 const converter = document.getElementById('converter')
+
+
+
 const socket = io.connect('http://' + document.domain + ':' + location.port + '/shell')
 
 socket.on('connect', () => {
