@@ -2,6 +2,7 @@ from subprocess import check_output
 from flask import Flask, render_template
 from flask_socketio import SocketIO, emit
 import traceback
+from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
