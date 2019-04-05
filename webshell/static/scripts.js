@@ -2,12 +2,13 @@ const input = document.getElementById('input')
 const shell = document.getElementById('shell')
 const converter = document.getElementById('converter')
 
-
-
 const socket = io.connect('http://' + document.domain + ':' + location.port + '/shell')
 
 socket.on('connect', () => {
-    status("Connecting to server")
+    status("Connected to server")
+    input.removeEventListener('keypress', execute(event) )
+    input.addEventListener('keypress', sendShell(event) )
+    status("provide path to the shell")
 })
 
 socket.on('disconnect', () => {
@@ -20,13 +21,15 @@ socket.on('message', (data) => {
     shell.scrollTop = shell.scrollHeight
 })
 
-socket.on('error', (data) => {
-    converter.innerText = data.msg
-    shell.innerHTML += '<error>' + converter.innerHTML + '</error><br>'
-    shell.scrollTop = shell.scrollHeight
-})
+socket.on('error', (data) => { error(data.msg) } )
 
 socket.on('status', (data) => { status('Server: ' + data.msg) } )
+
+function error(message) {
+    converter.innerText = message
+    shell.innerHTML += '<error>' + converter.innerHTML + '</error><br>'
+    shell.scrollTop = shell.scrollHeight
+}
 
 function status(message) {
     converter.innerText = message
@@ -34,7 +37,7 @@ function status(message) {
     shell.scrollTop = shell.scrollHeight
 }
 
-input.addEventListener('keypress', (event) => {
+function execute (event) {
     let code = event.keyCode || event.which
     if (code === 13) {
         text = input.value
@@ -52,6 +55,18 @@ input.addEventListener('keypress', (event) => {
                 socket.emit('command', {msg: text})
                 break;
         }
+
         input.value = ''
     }
-})
+}
+
+function sendShell (event) {
+    let code = event.keyCode || event.which
+    if (code === 13) {
+        text = input.value
+        socket.emit('init', {msg: text})
+        input.value = ''
+        input.removeEventListener('keypress', sendShell(event) )
+        input.addEventListener('keypress', execute(event) )
+    }
+}
