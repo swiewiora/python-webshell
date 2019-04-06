@@ -16,6 +16,11 @@ def index():
     return render_template('shell.html')
 
 
+@socket.on('connect', namespace='/shell')
+def connected():
+    print('Client connected')
+
+
 @socket.on('disconnect', namespace='/shell')
 def disconnected():
     print('Client disconnected')
@@ -86,4 +91,4 @@ def close_process():
 
 
 if __name__ == '__main__':
-    socket.run(app, debug=True)
+    socket.run(app)

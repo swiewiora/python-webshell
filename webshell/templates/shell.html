@@ -6,7 +6,9 @@
     {% endblock %}
 
     {% block content %}
-    <h1>Web Shell</h1>
+    <div class="page-header">
+        <h1>Web Shell</h1>
+    </div>
     <div class="container">
         <div class="row">
             <code
@@ -23,9 +25,12 @@
                     autocomplete="off"
             >
         </div>
+
         <div class="row top-buffer">
+            <h6>Options</h6>
+        </div>
+        <div class="row">
             <ul class="list-group list-group-flush">
-                <h6>Usage:</h6>
               <li class="list-group-item">-d - Disconnect from server</li>
               <li class="list-group-item">-c - Connect to server</li>
               <li class="list-group-item">clear - clear console</li>

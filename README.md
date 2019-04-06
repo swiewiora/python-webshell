@@ -33,6 +33,15 @@ Or on Windows cmd:
     flask run
 Open http://localhost:5000 in a browser.
 
+## Debugging
+
+    FLASK_APP=webshell
+    FLASK_DEBUG=true
+    flask run --no-reload
+
+or execute main script
+
+    python main.py
 ## Resources
 - [Flask](http://flask.pocoo.org)
 - [Flask-SocketIO](http://flask-socketio.readthedocs.io/en/latest/)
