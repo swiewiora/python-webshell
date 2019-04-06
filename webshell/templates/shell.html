@@ -1,42 +1,41 @@
-{%- extends "bootstrap/base.html" %}
+{%- extends "base.html" %}
 
-<!--<!DOCTYPE html>-->
-<!--<html lang="en">-->
-<!--<head>-->
-<!--    <meta charset="UTF-8">-->
-<!--    <title>Web Shell</title>-->
+    {% block styles %}
+    {{super()}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% endblock %}
 
-<!--    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">-->
-<!--</head>-->
-<!--<body>-->
-<!--    <h1>WEB SHELL</h1>-->
     {% block content %}
-
     <h1>Web Shell</h1>
     <div class="container">
         <div class="row">
-            <code id="shell"></code>
+            <code
+                    id="shell"
+                    class="p-1 bg-light text-dark"
+            ></code>
         </div>
-        <div class="row">
-            <input id="input" type="text" placeholder="Input command">
+        <div class="row top-buffer">
+            <input
+                    id="input"
+                    type="text"
+                    class="form-control"
+                    placeholder="Input command"
+                    autocomplete="off"
+            >
         </div>
-        <div class="row">
-             <p>Usage:<br />
-            -d - Disconnect from server<br />
-            -c - Connect to server<br />
-            clear - clear console</p>
+        <div class="row top-buffer">
+            <ul class="list-group list-group-flush">
+                <h6>Usage:</h6>
+              <li class="list-group-item">-d - Disconnect from server</li>
+              <li class="list-group-item">-c - Connect to server</li>
+              <li class="list-group-item">clear - clear console</li>
+            </ul>
         </div>
     </div>
+
     <div>
-
+        <pre id="converter" hidden></pre>
     </div>
-
-    <pre id="converter" hidden></pre>
-    {% endblock %}
-
-    {% block styles %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    {{super()}}
     {% endblock %}
 
     {% block scripts %}
@@ -44,6 +43,3 @@
     <script src="{{ url_for('static', filename='scripts.js') }}"></script>
     {{super()}}
     {% endblock %}
-
-<!--</body>-->
-<!--</html>-->

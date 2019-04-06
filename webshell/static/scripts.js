@@ -8,7 +8,7 @@ socket.on('connect', () => {
     status("Connected to server")
     input.removeEventListener('keypress', execute )
     input.addEventListener('keypress', sendShell )
-    status("provide path to the shell")
+    status("provide path to shell (for example: 'cmd', '/bin/bash')")
 })
 
 socket.on('disconnect', () => {
@@ -16,7 +16,7 @@ socket.on('disconnect', () => {
 })
 
 socket.on('message', (data) => {
-    converter.innerText = data.msg + '\n'
+    converter.innerText = data.msg //+ '\n'
     shell.innerHTML += converter.innerHTML
     shell.scrollTop = shell.scrollHeight
 })
@@ -27,13 +27,13 @@ socket.on('status', (data) => { status('Server: ' + data.msg) } )
 
 function error(message) {
     converter.innerText = message
-    shell.innerHTML += '<error>' + converter.innerHTML + '</error><br>'
+    shell.innerHTML += '<error>' + converter.innerHTML + '</error><br />'
     shell.scrollTop = shell.scrollHeight
 }
 
 function status(message) {
     converter.innerText = message
-    shell.innerHTML += '<i>' + converter.innerHTML + '</i><br>'
+    shell.innerHTML += '<i>' + converter.innerHTML + '</i><br />'
     shell.scrollTop = shell.scrollHeight
 }
 

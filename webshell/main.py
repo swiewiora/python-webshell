@@ -1,16 +1,13 @@
 from subprocess import PIPE
 from traceback import print_exc
 from flask import Flask, render_template
-from flask_bootstrap import Bootstrap
 from flask_socketio import SocketIO, emit, disconnect
 from sarge import Command, Capture
-
 from webshell.set_interval import SetInterval
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
 app.config['DEBUG'] = True
-Bootstrap(app)
 socket = SocketIO(app)
 
 
@@ -51,22 +48,20 @@ def init(data):
         print_exc()
         emit('error', {'msg': str(exception)})
         emit('error', {'msg': 'Initialization failed'})
-        # close_process()
         disconnect()
 
 
 @socket.on('command', namespace='/shell')
 def command(data):
     cmd = data['msg']
-    # emit('message', {'msg': '$ ' + cmd})
     print(cmd)
     try:
         process.stdin.write(cmd.encode() + b'\n')
         process.stdin.flush()
     except Exception:
         emit('error', {'msg': 'Server operation error'})
-        print_exc()
         disconnect()
+        print_exc()
     stream()
 
 
