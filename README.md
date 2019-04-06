@@ -1,15 +1,21 @@
 # Python Web Shell
-The purpose of this project was to create a web application in Python which will allow the user to execute arbitrary 
-shell commands on the remote web server via a browser.
+The purpose of this project was to create a web application in Python 
+which would allow the user to execute arbitrary shell commands on the 
+remote web server via a browser.
 
-The application provides the user with a text box where they will enter the commands. The commands shall be 
-sent to the server. The server executes the commands in a shell sub-process, capture standard and error output and 
-send it back to the browser, which displays it (e.g. using different colours for standard and error output, 
-respectively).
-------------
+The application provides the user with a text box where they will enter 
+the commands. The commands are sent to the server. The server executes 
+the commands in a shell sub-process, captures standard and error output 
+and sends it back to the browser, which displays it (using different 
+colours for standard and error output, respectively).
+
+Do not deploy this application on remote server or use 
+secure connection at least.
+
 ## Install
 
-Create a virtualenv (Python 3 built-in venv) and (optionally) activate it:
+Create a virtual environment (Python 3 built-in venv) and (optionally) 
+activate it:
 
     python -m venv venv
     . venv/bin/activate
@@ -46,3 +52,4 @@ or execute main script
 - [Flask](http://flask.pocoo.org)
 - [Flask-SocketIO](http://flask-socketio.readthedocs.io/en/latest/)
 - [Socket.IO](https://socket.io/)
+- [sarge](https://sarge.readthedocs.io/en/latest/)

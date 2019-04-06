@@ -5,7 +5,18 @@ StartTime = time.time()
 
 
 class SetInterval:
+    """Set or cancel actions called at specified intervals
+    source: https://stackoverflow.com/a/48709380/6129023
+    """
+
     def __init__(self, interval, action):
+        """Execute function asynchronously in intervals
+
+        :param interval: offset in seconds
+        :param action: pointer to method which should be exeuted
+        :type interval: int
+        :type action: function
+        """
         self.interval = interval
         self.action = action
         self.stopEvent = threading.Event()
@@ -19,4 +30,5 @@ class SetInterval:
             self.action()
 
     def cancel(self):
+        """Stop scheduling future intervals"""
         self.stopEvent.set()
