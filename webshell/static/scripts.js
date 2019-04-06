@@ -6,8 +6,8 @@ const socket = io.connect('http://' + document.domain + ':' + location.port + '/
 
 socket.on('connect', () => {
     status("Connected to server")
-    input.removeEventListener('keypress', execute(event) )
-    input.addEventListener('keypress', sendShell(event) )
+    input.removeEventListener('keypress', execute )
+    input.addEventListener('keypress', sendShell )
     status("provide path to the shell")
 })
 
@@ -61,12 +61,12 @@ function execute (event) {
 }
 
 function sendShell (event) {
-    let code = event.keyCode || event.which
+    let code = event.mdkeyCode || event.which
     if (code === 13) {
         text = input.value
         socket.emit('init', {msg: text})
         input.value = ''
-        input.removeEventListener('keypress', sendShell(event) )
-        input.addEventListener('keypress', execute(event) )
+        input.removeEventListener('keypress', sendShell )
+        input.addEventListener('keypress', execute )
     }
 }

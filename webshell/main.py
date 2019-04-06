@@ -17,7 +17,7 @@ socket = SocketIO(app)
 def index():
     return render_template('shell.html')
 
-#
+
 # @socket.on('connect', namespace='/shell')
 # def connected():
 #     emit('status', {'msg': 'Connected to server'})
@@ -68,10 +68,13 @@ def command(data):
 def stream():
     stdout = process.stdout.read().decode()
     stderr = process.stderr.read().decode()
-    print(stdout)
-    print_exception(Exception, stderr)
-    emit('message', {'msg': stdout})
-    emit('error', {'msg': stderr})
+    with app.test_request_context('/'):
+        if stdout.strip():
+            print(stdout)
+            socket.emit('message', {'msg': stdout}, namespace='/shell')
+        if stderr.strip():
+            print('Process error: ' + stderr)
+            socket.emit('error', {'msg': stderr}, namespace='/shell')
 
 
 def close_process():
