@@ -11,17 +11,24 @@
 <!--<body>-->
 <!--    <h1>WEB SHELL</h1>-->
     {% block content %}
-    <div>
-        <code id="shell"></code>
-    </div>
-    <div>
-        <input id="input" type="text" placeholder="Input command">
-    </div>
-    <div>
-        <p>Usage:<br />
+
+    <h1>Web Shell</h1>
+    <div class="container">
+        <div class="row">
+            <code id="shell"></code>
+        </div>
+        <div class="row">
+            <input id="input" type="text" placeholder="Input command">
+        </div>
+        <div class="row">
+             <p>Usage:<br />
             -d - Disconnect from server<br />
             -c - Connect to server<br />
             clear - clear console</p>
+        </div>
+    </div>
+    <div>
+
     </div>
 
     <pre id="converter" hidden></pre>

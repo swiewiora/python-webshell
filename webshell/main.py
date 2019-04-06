@@ -1,10 +1,11 @@
 from subprocess import PIPE
+from traceback import print_exc
 from flask import Flask, render_template
-from flask_socketio import SocketIO, emit, disconnect
-from traceback import print_exc, print_exception
-from sarge import Command, Capture
-from webshell.set_interval import SetInterval
 from flask_bootstrap import Bootstrap
+from flask_socketio import SocketIO, emit, disconnect
+from sarge import Command, Capture
+
+from webshell.set_interval import SetInterval
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -18,21 +19,20 @@ def index():
     return render_template('shell.html')
 
 
-# @socket.on('connect', namespace='/shell')
-# def connected():
-#     emit('status', {'msg': 'Connected to server'})
-
-
 @socket.on('disconnect', namespace='/shell')
 def disconnected():
     print('Client disconnected')
-    if interval:
+    try:
         interval.cancel()
-    if process:
+    except NameError:
+        print('Interval has not been initialized')
+    try:
         process.stdin.close()
         process.stdout.close(True)
         process.stderr.close(True)
         process.kill()
+    except NameError:
+        print('Process has not been initialized')
 
 
 @socket.on('init', namespace='/shell')
@@ -51,17 +51,22 @@ def init(data):
         print_exc()
         emit('error', {'msg': str(exception)})
         emit('error', {'msg': 'Initialization failed'})
-        close_process()
+        # close_process()
         disconnect()
 
 
 @socket.on('command', namespace='/shell')
 def command(data):
     cmd = data['msg']
-    emit('message', {'msg': '$ ' + cmd})
+    # emit('message', {'msg': '$ ' + cmd})
     print(cmd)
-    process.stdin.write(cmd.encode() + b'\n')
-    process.stdin.flush()
+    try:
+        process.stdin.write(cmd.encode() + b'\n')
+        process.stdin.flush()
+    except Exception:
+        emit('error', {'msg': 'Server operation error'})
+        print_exc()
+        disconnect()
     stream()
 
 
