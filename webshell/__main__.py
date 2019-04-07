@@ -1,7 +1,7 @@
 from subprocess import PIPE
+from flask import Flask, render_template
 # print catched exceptions to the log
 from traceback import print_exc
-from flask import Flask, render_template
 # send and receive messages with client
 from flask_socketio import SocketIO, emit, disconnect
 # use subprocess avoiding deadlocks

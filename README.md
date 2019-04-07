@@ -44,10 +44,17 @@ Open http://localhost:5000 in a browser.
     FLASK_APP=webshell
     FLASK_DEBUG=true
     flask run --no-reload
+    
+or execute main script in a debugger of your choice.
 
-or execute main script
+Debugging in PyCharm:
+1. Add new Python configuration,
+2. Choose target to run: Module and type `flask`
+3. In parameters type `run --no-reload`
+4. Add environment variables
+    - Name: `FLASK_APP`, value `webshell`
+    - Name: `FLASK_DEBUG`, value `true`
 
-    python main.py
 ## Resources
 - [Flask](http://flask.pocoo.org)
 - [Flask-SocketIO](http://flask-socketio.readthedocs.io/en/latest/)
