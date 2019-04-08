@@ -17,7 +17,7 @@ secure connection at least.
 Create a virtual environment (Python 3 built-in venv) and (optionally) 
 activate it:
 
-    python -m venv venv
+    python3 -m venv venv
     . venv/bin/activate
 
 Or on Windows cmd:
