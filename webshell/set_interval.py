@@ -5,9 +5,7 @@ StartTime = time.time()
 
 
 class SetInterval:
-    """Set or cancel actions called at specified intervals
-    source: https://stackoverflow.com/a/48709380/6129023
-    """
+    """Set or cancel actions called at specified intervals"""
 
     def __init__(self, interval, action):
         """Execute function asynchronously in intervals
