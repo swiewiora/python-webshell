@@ -9,8 +9,7 @@ the commands in a shell sub-process, captures standard and error output
 and sends it back to the browser, which displays it (using different 
 colours for standard and error output, respectively).
 
-Do not deploy this application on remote server or use 
-secure connection at least.
+> Do not deploy this application on remote server or at least use secure connection.
 
 ## Install
 
@@ -28,6 +27,7 @@ Or on Windows cmd:
 Install WebShell:
 
     pip install . -r requirements.txt
+> requirements-stable.txt contains package versions exactly used for development and test, however these packages may be obsolete or contain vulnerabilities.  requirements.txt allows installation of the newest versions within a major release.
 
 ## Run
 
@@ -54,6 +54,10 @@ Debugging in PyCharm:
 4. Add environment variables
     - Name: `FLASK_APP`, value `webshell`
     - Name: `FLASK_DEBUG`, value `true`
+
+## Screenshots
+![Main window](img1.png)
+![Error message in PowerShell](img2.png)
 
 ## Resources
 - [Flask](http://flask.pocoo.org)
